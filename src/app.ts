@@ -3,6 +3,8 @@ import express from "express" ;
 import cors from "cors" ;
 import cookieParser from "cookie-parser";
 import router from "./app/routes";
+import notFound from "./app/modules/middlewares/notFound";
+import globalErrorHandler from "./app/modules/middlewares/globalErrorHandler";
 
 const app = express() ;
 
@@ -16,7 +18,7 @@ app.get('/' , async (req , res) => {
     res.json({message : "The meal box server are running !" , success : true}) ;
 })
 
-// app.use(notFound) ;
-// app.use(globalErrorHandler) ;
+app.use(notFound) ;
+app.use(globalErrorHandler) ;
 
 export default app ;
