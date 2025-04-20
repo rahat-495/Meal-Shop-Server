@@ -6,7 +6,7 @@ import httpStatus from "http-status-codes";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../../config";
 import { TUserRole } from "../user/user.interfaces";
-import { usersModel } from "../auth/auth.modules";
+import { usersModel } from "../user/user.modules";
 
 const auth = (...requiredRoles : TUserRole[]) => {
     return catchAsync(async (req : Request , res : Response , next : NextFunction) => {

@@ -8,3 +8,8 @@ export type TRegisterUser = {
     role : string ;
     profileImage : string ;
 }
+
+export type TUserLogin = {
+    password : string ;
+    loginCredentials : string ;
+}

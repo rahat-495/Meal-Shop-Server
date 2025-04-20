@@ -10,6 +10,14 @@ const registerUserValidationSchema = z.object({
     })
 })
 
+const loginUserValidationSchema = z.object({
+    body : z.object({
+        password : z.string({}) ,
+        loginCredentials : z.string() ,
+    })
+})
+
 export const userValidations = {
+    loginUserValidationSchema ,
     registerUserValidationSchema ,
 }

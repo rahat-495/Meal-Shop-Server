@@ -8,6 +8,7 @@ import { userValidations } from "../user/user.validations";
 
 const router = Router() ;
 
+router.post("/login" , validateRequest(userValidations.loginUserValidationSchema) , authControllers.loginUser) ;
 router.post("/register" , upload.single("file") , parseTextDataToJsonData , validateRequest(userValidations.registerUserValidationSchema) , authControllers.registerUser) ;
 
 export const authRoutes = router ;
