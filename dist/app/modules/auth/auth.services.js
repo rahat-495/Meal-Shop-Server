@@ -16,12 +16,12 @@ exports.authServices = void 0;
 const config_1 = __importDefault(require("../../config"));
 const AppErrors_1 = __importDefault(require("../../errors/AppErrors"));
 const sendImageToCloudinary_1 = require("../../utils/sendImageToCloudinary");
-const user_modules_1 = require("../user/user.modules");
+const user_model_1 = require("../user/user.model");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const createUserIntoDb = (file, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const isUserAlreadyExist = yield user_modules_1.usersModel.findOne({ email: payload === null || payload === void 0 ? void 0 : payload.email, phoneNumber: payload === null || payload === void 0 ? void 0 : payload.phoneNumber });
+    const isUserAlreadyExist = yield user_model_1.usersModel.findOne({ email: payload === null || payload === void 0 ? void 0 : payload.email, phoneNumber: payload === null || payload === void 0 ? void 0 : payload.phoneNumber });
     if (isUserAlreadyExist) {
         throw new AppErrors_1.default(400, "User already exist !");
     }
@@ -31,7 +31,7 @@ const createUserIntoDb = (file, payload) => __awaiter(void 0, void 0, void 0, fu
         const { secure_url } = yield (0, sendImageToCloudinary_1.sendImageToCloudinary)(imageName, path);
         payload.profileImage = secure_url;
     }
-    const result = yield user_modules_1.usersModel.create(payload);
+    const result = yield user_model_1.usersModel.create(payload);
     if (!result) {
         throw new AppErrors_1.default(400, "User creation failed !");
     }
@@ -41,7 +41,7 @@ const createUserIntoDb = (file, payload) => __awaiter(void 0, void 0, void 0, fu
     return { accessToken, refreshToken };
 });
 const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const isUserExist = yield user_modules_1.usersModel.findOne({ $or: [{ email: payload === null || payload === void 0 ? void 0 : payload.loginCredentials }, { phoneNumber: payload === null || payload === void 0 ? void 0 : payload.loginCredentials }] }).select("+password");
+    const isUserExist = yield user_model_1.usersModel.findOne({ $or: [{ email: payload === null || payload === void 0 ? void 0 : payload.loginCredentials }, { phoneNumber: payload === null || payload === void 0 ? void 0 : payload.loginCredentials }] }).select("+password");
     if (!isUserExist) {
         throw new AppErrors_1.default(http_status_codes_1.default.NOT_FOUND, "User not found !");
     }

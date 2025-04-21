@@ -17,7 +17,7 @@ const AppErrors_1 = __importDefault(require("../../errors/AppErrors"));
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../../config"));
-const user_modules_1 = require("../user/user.modules");
+const user_model_1 = require("../user/user.model");
 const auth = (...requiredRoles) => {
     return (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const token = req.headers.authorization;
@@ -32,7 +32,7 @@ const auth = (...requiredRoles) => {
             throw new AppErrors_1.default(401, "Unauthorized !");
         }
         const role = decoded.role;
-        const user = yield user_modules_1.usersModel.findOne({ email: decoded === null || decoded === void 0 ? void 0 : decoded.email });
+        const user = yield user_model_1.usersModel.findOne({ email: decoded === null || decoded === void 0 ? void 0 : decoded.email });
         if (!user) {
             throw new AppErrors_1.default(404, "The user is not found !");
         }

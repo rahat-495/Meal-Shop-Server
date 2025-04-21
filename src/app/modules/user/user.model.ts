@@ -23,7 +23,7 @@ const userSchema = new Schema<TRegisterUser>({
         required : true ,
     },
     phoneNumber : {
-        type : Number ,
+        type : String ,
         required : true ,
         unique : true ,
     },

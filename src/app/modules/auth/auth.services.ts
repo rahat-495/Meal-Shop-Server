@@ -2,7 +2,7 @@
 import config from "../../config";
 import AppError from "../../errors/AppErrors";
 import { sendImageToCloudinary } from "../../utils/sendImageToCloudinary";
-import { usersModel } from "../user/user.modules";
+import { usersModel } from "../user/user.model";
 import { TRegisterUser, TUserLogin } from "./auth.interfaces";
 import jwt from "jsonwebtoken" ;
 import bcrypt from "bcrypt" ;
