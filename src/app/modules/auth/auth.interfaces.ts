@@ -3,7 +3,7 @@ export type TRegisterUser = {
     name : string ;
     email : string ;
     password : string ;
-    phoneNumber : number ;
+    phoneNumber : string ;
     isblocked : boolean ;
     role : string ;
     profileImage : string ;
