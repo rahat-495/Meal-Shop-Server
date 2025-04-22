@@ -3,6 +3,7 @@ import { Router } from "express";
 import { authRoutes } from "../modules/auth/auth.routes";
 import { userRoutes } from "../modules/user/user.routes";
 import { preferenceRoutes } from "../modules/preferences/preferences.routes";
+import { mealRoutes } from "../modules/meal/meal.routes";
 
 const router = Router() ;
 
@@ -18,6 +19,10 @@ const moduleRoutes = [
     {
         path : "/preferences",
         route : preferenceRoutes ,
+    },
+    {
+        path : "/meals",
+        route : mealRoutes ,
     },
 ]
 
