@@ -12,6 +12,14 @@ const getMyData : RequestHandler = catchAsync(async (req , res) => {
     }
 })
 
+const updateProfile : RequestHandler = catchAsync(async (req , res) => {
+    const result = await userServices.updateProfileIntoDb(req.user.userId , req.body) ;
+    if(result){
+        sendResponse<object>(res , {data : result , statusCode : 200 , success : true , message : "User profile updated success full !"}) ;
+    }
+})
+
 export const userControllers = {
     getMyData ,
+    updateProfile ,
 }
