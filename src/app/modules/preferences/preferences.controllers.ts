@@ -11,6 +11,14 @@ const createMyDietaryPreference : RequestHandler = catchAsync(async (req , res) 
     }
 })
 
+const updateMyDietaryPreference : RequestHandler = catchAsync(async (req , res) => {
+    const result = await dietaryPreferenceServices.updateDietaryPreferenceIntoDb(req.user.userId , req.body) ;
+    if(result){
+        sendResponse<object>(res , {data : result , statusCode : 200 , success : true , message : "Dietary preference updated success full !"}) ;
+    }
+})
+
 export const dietaryPreferenceControllers = {
     createMyDietaryPreference ,
+    updateMyDietaryPreference ,
 }

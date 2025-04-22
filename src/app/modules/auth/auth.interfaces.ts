@@ -4,8 +4,8 @@ export type TRegisterUser = {
     email : string ;
     password : string ;
     phoneNumber : string ;
-    isblocked : boolean ;
-    role : string ;
+    isblocked ?: boolean ;
+    role ?: string ;
     profileImage : string ;
 }
 

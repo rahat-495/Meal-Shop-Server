@@ -1,7 +1,7 @@
 
 import { z } from "zod"
 
-const createDietaryPreferenceValidationSchema = z.object({
+const dietaryPreferenceValidationSchema = z.object({
     body : z.object({
         dietary: z.enum([
             "Vegan",
@@ -23,5 +23,5 @@ const createDietaryPreferenceValidationSchema = z.object({
 })
 
 export const dietaryPreferenceValidations = {
-    createDietaryPreferenceValidationSchema ,
+    dietaryPreferenceValidationSchema ,
 }

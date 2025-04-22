@@ -11,8 +11,15 @@ const router = Router() ;
 router.post(
     "/create-dietary-preference" , 
     auth(userRole.user) , 
-    validateRequest(dietaryPreferenceValidations.createDietaryPreferenceValidationSchema) , 
+    validateRequest(dietaryPreferenceValidations.dietaryPreferenceValidationSchema) , 
     dietaryPreferenceControllers.createMyDietaryPreference 
+) ;
+
+router.patch(
+    "/update-dietary-preference" , 
+    auth(userRole.user) , 
+    validateRequest(dietaryPreferenceValidations.dietaryPreferenceValidationSchema) , 
+    dietaryPreferenceControllers.updateMyDietaryPreference 
 ) ;
 
 export const preferenceRoutes = router ;
