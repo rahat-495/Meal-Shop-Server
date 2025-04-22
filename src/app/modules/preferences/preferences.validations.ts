@@ -19,7 +19,6 @@ const createDietaryPreferenceValidationSchema = z.object({
             "SugarFree",
             "Organic"
           ]),
-        userId: z.string({ message: "userId is required" }),
     })
 })
 
