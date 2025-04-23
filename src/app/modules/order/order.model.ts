@@ -1,12 +1,12 @@
 
-import mongoose, { Schema, model } from 'mongoose';
-import { TAddToCartIntoDb, TOrder } from './order.interfaces';
+import { Schema, model } from 'mongoose';
+import { TOrder } from './order.interfaces';
 
-const OrderBookSchema: Schema = new Schema<TOrder>(
+const orderMealSchema: Schema = new Schema<TOrder>(
   {
     email: { type: String, required: false },
-    customer: { type: Schema.ObjectId, ref: 'users', required: true },
-    id: { type: Schema.ObjectId, ref: 'meals', required: true },
+    customer: { type: Schema.Types.ObjectId, ref: 'user', required: true },
+    id: { type: Schema.Types.ObjectId, ref: 'meal', required: true },
     quantity: { type: Number, required: [true, 'Quantity is required.'] },
     totalPrice: { type: Number, required: [true, 'Total price is required.'] },
     status: {
@@ -30,22 +30,5 @@ const OrderBookSchema: Schema = new Schema<TOrder>(
   }
 );
 
-// const addToCartSchema = new Schema<TAddToCartIntoDb>({
-//   product: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: "Book", 
-//     required: true
-//   },
-//   quantity : {
-//     type : Number ,
-//     required : true ,
-//   },
-//   email : {
-//     type : String ,
-//     required : true ,
-//   },
-// })
-
-const OrderBook = model<TOrder>('OrderBook', OrderBookSchema);
-// export const cartModel = model<TAddToCartIntoDb>('cart', addToCartSchema);
-export default OrderBook;
+const orderMealModel = model<TOrder>('orderMeal', orderMealSchema);
+export default orderMealModel;

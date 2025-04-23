@@ -4,48 +4,42 @@ import auth from '../middlewares/auth';
 import { userRole } from '../user/user.constants';
 import { orderController } from './order.controllers';
 
-const OrderBookRouter = Router();
+const router = Router();
 
-OrderBookRouter.post(
+router.post(
   '/create-order',
   auth(userRole.user),
   orderController.createMealOrder
 );
 
-OrderBookRouter.put(
+router.put(
   '/update-order',
   auth(userRole.admin),
   orderController.updateMealOrder
 );
 
-OrderBookRouter.get(
+router.get(
   '/verify',
   auth(userRole.user),
   orderController.verifyMealOrder
 );
 
-OrderBookRouter.get(
+router.get(
   '/',
   auth(userRole.admin),
   orderController.getAllOrders
 );
 
-OrderBookRouter.get(
+router.get(
   '/my-orders',
   auth(userRole.user, userRole.admin),
   orderController.getUserMealOrders
 );
 
-OrderBookRouter.delete(
+router.delete(
   '/:orderId',
-  auth(userRole.user , userRole.admin),
-  orderController.deleteMealOrder
+  auth(userRole.user),
+  orderController.deleteMealOrder ,
 );
 
-OrderBookRouter.delete(
-  '/:orderId',
-  auth(userRole.admin , userRole.admin),
-  orderController.adminDeleteMealOrder
-);
-
-export default OrderBookRouter;
+export const orderRoutes = router;

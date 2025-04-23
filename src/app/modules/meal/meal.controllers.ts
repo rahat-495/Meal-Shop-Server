@@ -25,7 +25,7 @@ const deleteMeal : RequestHandler = catchAsync(async (req , res) => {
 })
 
 const getAllMeals : RequestHandler = catchAsync(async (req , res) => {
-    const result = await mealServices.getAllMealsFromDb() ;
+    const result = await mealServices.getAllMealsFromDb(req.user.userId) ;
     if(result){
         sendResponse<object>(res , {data : result , statusCode : 200 , success : true , message : "Meals are retrived success full !"}) ;
     }

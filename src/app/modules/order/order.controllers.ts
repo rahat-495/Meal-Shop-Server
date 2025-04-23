@@ -7,7 +7,7 @@ import AppError from '../../errors/AppErrors';
 import { orderService } from './order.services';
 
 const createMealOrder = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.user?._id;
+  const userId = req.user?.userId;
 
   const bookOrderData = {
     ...req.body,
@@ -19,7 +19,7 @@ const createMealOrder = catchAsync(async (req: Request, res: Response) => {
     req.socket.remoteAddress ||
     '127.0.0.1';
 
-  const result = await orderService.createBookOrderService(
+  const result = await orderService.createMealOrderService(
     bookOrderData,
     userId,
     client_ip
@@ -28,7 +28,7 @@ const createMealOrder = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: StatusCodes.CREATED,
     success: true,
-    message: 'Book order created successfully',
+    message: 'Order created successfully',
     data: result,
   });
 });
@@ -40,7 +40,7 @@ const verifyMealOrder = catchAsync(async (req: Request, res: Response) => {
     throw new AppError(StatusCodes.BAD_REQUEST, 'Invalid order_id');
   }
 
-  const result = await orderService.verifyBookOrderPayment(order_id);
+  const result = await orderService.verifyMealOrderPayment(order_id);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
@@ -51,7 +51,7 @@ const verifyMealOrder = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getUserMealOrders = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.user?._id;
+  const userId = req.user?.userId;
   const result = await orderService.getAllOrdersByUser(userId);
 
   sendResponse(res, {
@@ -64,26 +64,14 @@ const getUserMealOrders = catchAsync(async (req: Request, res: Response) => {
 
 const deleteMealOrder = catchAsync(async (req: Request, res: Response) => {
   const { orderId } = req.params;
-  const userId = req.user?._id;
+  const userId = req.user?.userId;
 
   await orderService.deleteOrderFromDB(orderId, userId);
 
   sendResponse(res, { data : {} ,
     statusCode: StatusCodes.OK,
     success: true,
-    message: 'Book order deleted successfully',
-  });
-});
-
-const adminDeleteMealOrder = catchAsync(async (req: Request, res: Response) => {
-  const { orderId } = req.params;
-  const result = await orderService.adminDeleteOrder(orderId);
-
-  sendResponse(res, {
-    statusCode: StatusCodes.OK,
-    success: true,
-    message: 'Book order deleted successfully',
-    data: result,
+    message: 'Order deleted successfully',
   });
 });
 
@@ -99,7 +87,7 @@ const getAllOrders = catchAsync(async (req: Request, res: Response) => {
 })
 
 const updateMealOrder = catchAsync(async (req: Request, res: Response) => {
-  const result = await orderService.updateBookOrderIntoDb(req.body);
+  const result = await orderService.updateMealOrderIntoDb(req.body);
   
   sendResponse(res, {
     statusCode: StatusCodes.OK,
@@ -116,5 +104,4 @@ export const orderController = {
   deleteMealOrder,
   updateMealOrder ,
   getUserMealOrders,
-  adminDeleteMealOrder,
 };

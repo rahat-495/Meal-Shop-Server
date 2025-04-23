@@ -2,9 +2,6 @@
 // @ts-ignore
 import Shurjopay, { PaymentResponse, VerificationResponse } from 'shurjopay';
 import config from '../../config';
-// import config from '../../app/config';
-// import sendResponse from '../../utils/sendResponse';
-// import { StatusCodes } from 'http-status-codes';
 
 const shurjopay = new Shurjopay();
 
@@ -26,19 +23,6 @@ const makePaymentAsync = async (
       (error: unknown) => reject(error),
     );
   });
-  // const paymentResult = await shurjopay.makePayment(
-  //   paymentPayload,
-  //   (response) => {
-  //     sendResponse(res, {
-  //       statusCode: StatusCodes.CREATED,
-  //       success: true,
-  //       message: 'Order created successfully',
-  //       data: response,
-  //     });
-  //   },
-  //   (error) => console.log(error),
-  // );
-  // return paymentResult;
 };
 
 const verifyPaymentAsync = (

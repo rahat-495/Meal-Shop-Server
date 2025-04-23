@@ -49,7 +49,7 @@ const mealSchema = new Schema<TMeal>({
         default: true,
     },
     createdBy: {
-        ref: "users",
+        ref: "user",
         required: true,
         type: Schema.Types.ObjectId,
     }

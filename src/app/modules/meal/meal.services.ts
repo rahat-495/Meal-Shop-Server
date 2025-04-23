@@ -1,5 +1,6 @@
 
 import AppError from "../../errors/AppErrors";
+import { dietaryPreferencesModel } from "../preferences/preferences.model";
 import { TMeal } from "./meal.interfaces"
 import { mealsModel } from "./meal.model";
 
@@ -28,8 +29,9 @@ const deleteMealFromDb = async (id : string) => {
     return result ;
 }
 
-const getAllMealsFromDb = async () => {
-    const result = await mealsModel.find() ;
+const getAllMealsFromDb = async (userId : string) => {
+    const userDietary = await dietaryPreferencesModel.findOne({userId}) ;
+    const result = await mealsModel.find({dietary : userDietary?.dietary}).populate("createdBy" , "name email profileImage") ;
     return result ;
 }
 

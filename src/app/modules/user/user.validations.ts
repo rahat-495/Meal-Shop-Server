@@ -6,6 +6,7 @@ const registerUserValidationSchema = z.object({
         name : z.string({}) ,
         email : z.string({}).email({message : "Invalid email address"}) ,
         password : z.string({}) ,
+        profileImage : z.string({}) ,
         phoneNumber: z.string({ required_error: "Phone number is required" }).regex(/^01[0-9]{9}$/, "Invalid Bangladeshi phone number"),
     })
 })

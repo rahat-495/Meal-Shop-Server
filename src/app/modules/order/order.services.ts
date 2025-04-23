@@ -2,13 +2,13 @@
 import { StatusCodes } from 'http-status-codes';
 import mongoose from 'mongoose';
 import { usersModel } from '../user/user.model';
-import { TAddToCartIntoDb, TOrder } from './order.interfaces';
-import OrderBook from './order.model';
+import { TOrder } from './order.interfaces';
 import AppError from '../../errors/AppErrors';
 import { orderUtils } from './order.utils';
 import { mealsModel } from '../meal/meal.model';
+import orderMealModel from './order.model';
 
-const createBookOrderService = async (
+const createMealOrderService = async (
   data: TOrder,
   userId: string,
   client_ip: string
@@ -21,25 +21,25 @@ const createBookOrderService = async (
     if (!user) {
       throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
     }
-
+    
     const { id , quantity } = data;
-
+    
     if (!data.customer) {
       data.customer = new mongoose.Types.ObjectId(user._id);
     }
-
-    const book = await mealsModel.findById(id).session(session);
-    if (!book) {
-      throw new AppError(StatusCodes.BAD_REQUEST, 'Book not found.');
+    
+    const meal = await mealsModel.findById(id).session(session);
+    if (!meal) {
+      throw new AppError(StatusCodes.BAD_REQUEST, 'Meal not found.');
     }
     
-    data.totalPrice = book.price * quantity;
-    await book.save({ session });
+    data.totalPrice = meal.price * quantity;
+    await meal.save({ session });
     
     const orderData = {...data, customer: user._id };
-    const result = await OrderBook.create([orderData], { session });
+    const result = await orderMealModel.create([orderData], { session });
     await result[0].populate('customer', 'name email role');
-
+    
     // Payment integration
     const shurjopayPayload = {
       amount: data.totalPrice,
@@ -51,10 +51,11 @@ const createBookOrderService = async (
       customer_address: 'N/A',
       customer_city: 'N/A',
       client_ip,
+      return_url: `http://localhost:5555/api/v1/orders/verify` ,
     };
-
+    
     const payment = await orderUtils.makePaymentAsync(shurjopayPayload);
-
+    
     if (payment?.transactionStatus) {
       await result[0].updateOne({
         transaction: {
@@ -63,28 +64,28 @@ const createBookOrderService = async (
         },
       });
     }
-
+    
     await session.commitTransaction();
     session.endSession();
     return { order: result[0], checkout_url: payment.checkout_url };
-  } catch (error) {
 
-    console.log(error);
+  } catch (error) {
+    
     await session.abortTransaction();
     session.endSession();
     throw new AppError(
       StatusCodes.INTERNAL_SERVER_ERROR,
-      'Book order creation failed'
+      'Order creation failed'
     );
 
   }
 };
 
-const verifyBookOrderPayment = async (order_id: string) => {
+const verifyMealOrderPayment = async (order_id: string) => {
   const verifiedPayment = await orderUtils.verifyPaymentAsync(order_id);
 
   if (verifiedPayment.length) {
-    await OrderBook.findOneAndUpdate(
+    await orderMealModel.findOneAndUpdate(
       {
         'transaction.id': order_id,
       },
@@ -111,7 +112,7 @@ const verifyBookOrderPayment = async (order_id: string) => {
 };
 
 const getAllOrdersByUser = async (userId: string) => {
-  const userOrders = await OrderBook.find({ customer: userId }).populate("customer id")
+  const userOrders = await orderMealModel.find({ customer: userId }).populate('customer', 'name email profileImage').populate('id') ;
 
   if (!userOrders || userOrders.length === 0) {
     throw new AppError(StatusCodes.NOT_FOUND, 'No orders found for this user');
@@ -120,7 +121,7 @@ const getAllOrdersByUser = async (userId: string) => {
 };
 
 const getAllOrdersFromDb = async () => {
-  const result = await OrderBook.find() ;
+  const result = await orderMealModel.find().populate('customer', 'name email profileImage').populate('id') ;
   return result ;
 }
 
@@ -133,7 +134,7 @@ const updateOrderQuantityService = async (
   session.startTransaction();
 
   try {
-    const order = await OrderBook.findById(orderId).session(session);
+    const order = await orderMealModel.findById(orderId).session(session);
     if (!order) {
       throw new AppError(StatusCodes.NOT_FOUND, 'Order not found');
     }
@@ -177,37 +178,36 @@ const updateOrderQuantityService = async (
 };
 
 const deleteOrderFromDB = async (id: string, userId: string) => {
-  const order = await OrderBook.findById(id);
+  const order = await orderMealModel.findById(id);
   if (!order) {
     throw new AppError(StatusCodes.NOT_FOUND, 'Order not found');
   }
-  return await OrderBook.findByIdAndDelete(id);
-};
 
-const adminDeleteOrder = async (id: string) => {
-  const order = await OrderBook.findById(id);
-  if (!order) {
-    throw new AppError(StatusCodes.NOT_FOUND, 'Order not found');
+  if(order.status !== "Pending" && order.status !== "Preparing"){
+    throw new AppError(StatusCodes.BAD_REQUEST, 'You can not delete this order !') ;
   }
-  return await OrderBook.findByIdAndDelete(id);
+  
+  if(order.customer.toString() !== userId){
+    throw new AppError(StatusCodes.FORBIDDEN, 'Unauthorized to delete this order !') ;
+  }
+  return await orderMealModel.findByIdAndDelete(id);
 };
 
-const updateBookOrderIntoDb = async (payload : {id : string , status : string}) => {
-  const isOrderAxist = await OrderBook.findById(payload?.id) ;
+const updateMealOrderIntoDb = async (payload : {id : string , status : string}) => {
+  const isOrderAxist = await orderMealModel.findById(payload?.id) ;
   if(!isOrderAxist){
     throw new AppError(404 , "Order not found !") ;
   }
-  const result = await OrderBook.findByIdAndUpdate(payload?.id , {status : payload?.status}) ;
+  const result = await orderMealModel.findByIdAndUpdate(payload?.id , {status : payload?.status}) ;
   return result ;
 }
 
 export const orderService = {
-  createBookOrderService,
-  updateBookOrderIntoDb ,
-  verifyBookOrderPayment,
+  createMealOrderService,
+  updateMealOrderIntoDb ,
+  verifyMealOrderPayment,
   getAllOrdersByUser,
   getAllOrdersFromDb ,
   updateOrderQuantityService,
   deleteOrderFromDB,
-  adminDeleteOrder,
 };
