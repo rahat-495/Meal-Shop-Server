@@ -8,6 +8,10 @@ import { mealValidations } from "./meal.validations";
 
 const router = Router() ;
 
+router.get("/" , mealControllers.getAllMeals) ; 
+router.get("/:id" , mealControllers.getSingleMeal) ; 
+router.delete("/:id" , auth(userRole.admin) , mealControllers.deleteMeal) ; 
 router.post("/create-meal" , auth(userRole.admin) , validateRequest(mealValidations.createMealValidationSchema) , mealControllers.createMeal) ; 
+router.patch("/update-meal/:id" , auth(userRole.admin) , validateRequest(mealValidations.updateMealValidationSchema) , mealControllers.updateMeal) ; 
 
 export const mealRoutes = router ;
