@@ -8,6 +8,12 @@ import validateRequest from "../middlewares/validateRequest";
 
 const router = Router() ;
 
+router.get(
+    "/" , 
+    auth(userRole.admin) , 
+    dietaryPreferenceControllers.getAllDietaryPreferences 
+) ;
+
 router.post(
     "/create-dietary-preference" , 
     auth(userRole.user) , 

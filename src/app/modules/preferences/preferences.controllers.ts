@@ -4,6 +4,13 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { dietaryPreferenceServices } from "./preferences.services";
 
+const getAllDietaryPreferences : RequestHandler = catchAsync(async (req , res) => {
+    const result = await dietaryPreferenceServices.getAllDietaryPreferencesFromDb() ;
+    if(result){
+        sendResponse<object>(res , {data : result , statusCode : 200 , success : true , message : "Dietary preference created success full !"}) ;
+    }
+})
+
 const createMyDietaryPreference : RequestHandler = catchAsync(async (req , res) => {
     const result = await dietaryPreferenceServices.createDietaryPreferenceIntoDb(req.user.userId , req.body) ;
     if(result){
@@ -19,6 +26,7 @@ const updateMyDietaryPreference : RequestHandler = catchAsync(async (req , res) 
 })
 
 export const dietaryPreferenceControllers = {
+    getAllDietaryPreferences ,
     createMyDietaryPreference ,
     updateMyDietaryPreference ,
 }

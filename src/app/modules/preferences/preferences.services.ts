@@ -4,6 +4,11 @@ import { TDietaryPreference } from "./preferences.interfaces"
 import { dietaryPreferencesModel } from "./preferences.model";
 import http from "http-status-codes"
 
+const getAllDietaryPreferencesFromDb = async () => {
+    const result = await dietaryPreferencesModel.find().populate("userId" , "_id name email profileImage phoneNumber") ;
+    return result ;
+}
+
 const createDietaryPreferenceIntoDb = async (userId : string , payload : TDietaryPreference) => {
     const isUserAlreadyHaveDietaryPreference = await dietaryPreferencesModel.findOne({userId}) ;
     
@@ -29,4 +34,5 @@ const updateDietaryPreferenceIntoDb = async (userId : string , payload : TDietar
 export const dietaryPreferenceServices = {
     createDietaryPreferenceIntoDb ,
     updateDietaryPreferenceIntoDb ,
+    getAllDietaryPreferencesFromDb ,
 }

@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 
 export type TDietary =
   | "Vegan"
@@ -17,5 +18,5 @@ export type TDietary =
 
 export type TDietaryPreference = {
     dietary : TDietary ;
-    userId : string ;
+    userId : Types.ObjectId ;
 }
