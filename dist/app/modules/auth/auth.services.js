@@ -15,21 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authServices = void 0;
 const config_1 = __importDefault(require("../../config"));
 const AppErrors_1 = __importDefault(require("../../errors/AppErrors"));
-const sendImageToCloudinary_1 = require("../../utils/sendImageToCloudinary");
 const user_model_1 = require("../user/user.model");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
-const createUserIntoDb = (file, payload) => __awaiter(void 0, void 0, void 0, function* () {
+const createUserIntoDb = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const isUserAlreadyExist = yield user_model_1.usersModel.findOne({ email: payload === null || payload === void 0 ? void 0 : payload.email, phoneNumber: payload === null || payload === void 0 ? void 0 : payload.phoneNumber });
     if (isUserAlreadyExist) {
         throw new AppErrors_1.default(400, "User already exist !");
-    }
-    if (file) {
-        const path = file === null || file === void 0 ? void 0 : file.path;
-        const imageName = `${payload === null || payload === void 0 ? void 0 : payload.phoneNumber}${payload === null || payload === void 0 ? void 0 : payload.name}`;
-        const { secure_url } = yield (0, sendImageToCloudinary_1.sendImageToCloudinary)(imageName, path);
-        payload.profileImage = secure_url;
     }
     const result = yield user_model_1.usersModel.create(payload);
     if (!result) {

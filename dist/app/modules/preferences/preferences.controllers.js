@@ -12,23 +12,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userControllers = void 0;
+exports.dietaryPreferenceControllers = void 0;
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
-const user_services_1 = require("./user.services");
-const getMyData = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_services_1.userServices.getMyDataFromDb(req.user.userId);
+const preferences_services_1 = require("./preferences.services");
+const createMyDietaryPreference = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield preferences_services_1.dietaryPreferenceServices.createDietaryPreferenceIntoDb(req.user.userId, req.body);
     if (result) {
-        (0, sendResponse_1.default)(res, { data: result, statusCode: 200, success: true, message: "User login success full !" });
+        (0, sendResponse_1.default)(res, { data: result, statusCode: 200, success: true, message: "Dietary preference created success full !" });
     }
 }));
-const updateProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_services_1.userServices.updateProfileIntoDb(req.user.userId, req.body);
+const updateMyDietaryPreference = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield preferences_services_1.dietaryPreferenceServices.updateDietaryPreferenceIntoDb(req.user.userId, req.body);
     if (result) {
-        (0, sendResponse_1.default)(res, { data: result, statusCode: 200, success: true, message: "User profile updated success full !" });
+        (0, sendResponse_1.default)(res, { data: result, statusCode: 200, success: true, message: "Dietary preference updated success full !" });
     }
 }));
-exports.userControllers = {
-    getMyData,
-    updateProfile,
+exports.dietaryPreferenceControllers = {
+    createMyDietaryPreference,
+    updateMyDietaryPreference,
 };

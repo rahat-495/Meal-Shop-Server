@@ -10,4 +10,5 @@ const user_constants_1 = require("./user.constants");
 const user_controllers_1 = require("./user.controllers");
 const router = (0, express_1.Router)();
 router.get("/get-my-data", (0, auth_1.default)(user_constants_1.userRole.user, user_constants_1.userRole.admin), user_controllers_1.userControllers.getMyData);
+router.patch("/update-profile", (0, auth_1.default)(user_constants_1.userRole.user, user_constants_1.userRole.admin), user_controllers_1.userControllers.updateProfile);
 exports.userRoutes = router;

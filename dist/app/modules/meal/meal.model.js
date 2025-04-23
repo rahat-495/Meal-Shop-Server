@@ -1,8 +1,8 @@
-
-import { Schema, model } from "mongoose";
-import { TMeal } from "./meal.interfaces";
-
-const mealSchema = new Schema<TMeal>({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.mealsModel = void 0;
+const mongoose_1 = require("mongoose");
+const mealSchema = new mongoose_1.Schema({
     title: {
         type: String,
         required: true,
@@ -51,10 +51,9 @@ const mealSchema = new Schema<TMeal>({
     createdBy: {
         ref: "user",
         required: true,
-        type: Schema.Types.ObjectId,
+        type: mongoose_1.Schema.Types.ObjectId,
     }
-},{
+}, {
     timestamps: true,
 });
-
-export const mealsModel = model<TMeal>("meal", mealSchema);
+exports.mealsModel = (0, mongoose_1.model)("meal", mealSchema);

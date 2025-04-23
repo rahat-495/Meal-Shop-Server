@@ -9,6 +9,7 @@ import { mealValidations } from "./meal.validations";
 const router = Router() ;
 
 router.get("/" , mealControllers.getAllMeals) ; 
+router.get("/my-preferences-meals" , auth(userRole.user , userRole.admin) , mealControllers.getAllMealsForPreferences) ; 
 router.get("/:id" , mealControllers.getSingleMeal) ; 
 router.delete("/:id" , auth(userRole.admin) , mealControllers.deleteMeal) ; 
 router.post("/create-meal" , auth(userRole.admin) , validateRequest(mealValidations.createMealValidationSchema) , mealControllers.createMeal) ; 
