@@ -16,6 +16,17 @@ exports.dietaryPreferenceServices = void 0;
 const AppErrors_1 = __importDefault(require("../../errors/AppErrors"));
 const preferences_model_1 = require("./preferences.model");
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
+const getAllDietaryPreferencesFromDb = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield preferences_model_1.dietaryPreferencesModel.find().populate("userId", "_id name email profileImage phoneNumber");
+    return result;
+});
+const getMyDietaryPreferencesFromDb = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield preferences_model_1.dietaryPreferencesModel.findOne({ userId: userId }).populate("userId", "_id name email profileImage phoneNumber");
+    if (!result) {
+        throw new AppErrors_1.default(http_status_codes_1.default.NOT_FOUND, "User have not any dietary preference !");
+    }
+    return result;
+});
 const createDietaryPreferenceIntoDb = (userId, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const isUserAlreadyHaveDietaryPreference = yield preferences_model_1.dietaryPreferencesModel.findOne({ userId });
     if (isUserAlreadyHaveDietaryPreference) {
@@ -35,4 +46,6 @@ const updateDietaryPreferenceIntoDb = (userId, payload) => __awaiter(void 0, voi
 exports.dietaryPreferenceServices = {
     createDietaryPreferenceIntoDb,
     updateDietaryPreferenceIntoDb,
+    getMyDietaryPreferencesFromDb,
+    getAllDietaryPreferencesFromDb,
 };

@@ -16,6 +16,18 @@ exports.dietaryPreferenceControllers = void 0;
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const preferences_services_1 = require("./preferences.services");
+const getAllDietaryPreferences = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield preferences_services_1.dietaryPreferenceServices.getAllDietaryPreferencesFromDb();
+    if (result) {
+        (0, sendResponse_1.default)(res, { data: result, statusCode: 200, success: true, message: "Dietary preference created success full !" });
+    }
+}));
+const getMyDietaryPreferences = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield preferences_services_1.dietaryPreferenceServices.getMyDietaryPreferencesFromDb(req.user.userId);
+    if (result) {
+        (0, sendResponse_1.default)(res, { data: result, statusCode: 200, success: true, message: "Dietary preference are retrived success full !" });
+    }
+}));
 const createMyDietaryPreference = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield preferences_services_1.dietaryPreferenceServices.createDietaryPreferenceIntoDb(req.user.userId, req.body);
     if (result) {
@@ -29,6 +41,8 @@ const updateMyDietaryPreference = (0, catchAsync_1.default)((req, res) => __awai
     }
 }));
 exports.dietaryPreferenceControllers = {
+    getMyDietaryPreferences,
+    getAllDietaryPreferences,
     createMyDietaryPreference,
     updateMyDietaryPreference,
 };

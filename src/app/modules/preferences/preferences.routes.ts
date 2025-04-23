@@ -14,6 +14,12 @@ router.get(
     dietaryPreferenceControllers.getAllDietaryPreferences 
 ) ;
 
+router.get(
+    "/my-dietary-preferences" , 
+    auth(userRole.admin , userRole.user) , 
+    dietaryPreferenceControllers.getMyDietaryPreferences
+) ;
+
 router.post(
     "/create-dietary-preference" , 
     auth(userRole.user) , 

@@ -24,7 +24,8 @@ const dietaryPreferenceSchema = new mongoose_1.Schema({
         required: true,
     },
     userId: {
-        type: String,
+        ref: "user",
+        type: mongoose_1.Schema.Types.ObjectId,
         required: true,
     },
 });
