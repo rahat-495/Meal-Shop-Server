@@ -15,6 +15,11 @@ const getMyDataFromDb = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_model_1.usersModel.findById(id).select("-password -__v");
     return result;
 });
+const updateProfileIntoDb = (id, paylaod) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.usersModel.findByIdAndUpdate(id, paylaod, { new: true }).select("-password -__v");
+    return result;
+});
 exports.userServices = {
     getMyDataFromDb,
+    updateProfileIntoDb,
 };
