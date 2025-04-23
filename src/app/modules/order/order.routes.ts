@@ -13,7 +13,7 @@ router.post(
 );
 
 router.put(
-  '/update-order',
+  '/update-order-status',
   auth(userRole.admin),
   orderController.updateMealOrder
 );

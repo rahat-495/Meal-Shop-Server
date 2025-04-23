@@ -25,7 +25,14 @@ const deleteMeal : RequestHandler = catchAsync(async (req , res) => {
 })
 
 const getAllMeals : RequestHandler = catchAsync(async (req , res) => {
-    const result = await mealServices.getAllMealsFromDb(req.user.userId) ;
+    const result = await mealServices.getAllMealsFromDb(req.query) ;
+    if(result){
+        sendResponse<object>(res , {data : result , statusCode : 200 , success : true , message : "Meals are retrived success full !"}) ;
+    }
+})
+
+const getAllMealsForPreferences : RequestHandler = catchAsync(async (req , res) => {
+    const result = await mealServices.getAllMealsForPreferencesFromDb(req?.user?.userId , req.query) ;
     if(result){
         sendResponse<object>(res , {data : result , statusCode : 200 , success : true , message : "Meals are retrived success full !"}) ;
     }
@@ -44,4 +51,5 @@ export const mealControllers = {
     deleteMeal ,
     getAllMeals ,
     getSingleMeal ,
+    getAllMealsForPreferences ,
 }

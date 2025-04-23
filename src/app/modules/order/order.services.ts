@@ -198,6 +198,7 @@ const updateMealOrderIntoDb = async (payload : {id : string , status : string}) 
   if(!isOrderAxist){
     throw new AppError(404 , "Order not found !") ;
   }
+  
   const result = await orderMealModel.findByIdAndUpdate(payload?.id , {status : payload?.status}) ;
   return result ;
 }
