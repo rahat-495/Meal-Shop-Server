@@ -43,7 +43,7 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     }
     const isPasswordMatched = yield bcrypt_1.default.compare(payload.password, isUserExist.password);
     if (!isPasswordMatched) {
-        throw new AppErrors_1.default(http_status_codes_1.default.UNAUTHORIZED, "User not found !");
+        throw new AppErrors_1.default(http_status_codes_1.default.UNAUTHORIZED, "Password did not match !");
     }
     const jwtPayload = { email: isUserExist === null || isUserExist === void 0 ? void 0 : isUserExist.email, role: isUserExist === null || isUserExist === void 0 ? void 0 : isUserExist.role, userId: isUserExist === null || isUserExist === void 0 ? void 0 : isUserExist._id, phoneNumber: isUserExist === null || isUserExist === void 0 ? void 0 : isUserExist.phoneNumber };
     const accessToken = yield jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwtAccessSecret, { expiresIn: "1d" });
