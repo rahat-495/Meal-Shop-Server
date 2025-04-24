@@ -71,7 +71,7 @@ const getAllMealsFromDb = (query) => __awaiter(void 0, void 0, void 0, function*
     }
     const total = yield meal_model_1.mealsModel.find(filter).estimatedDocumentCount();
     const result = yield meal_model_1.mealsModel.find(filter).skip(skip).limit(limit);
-    const totalPage = Math.ceil(result.length / limit);
+    const totalPage = Math.ceil(total / limit);
     return { result, meta: { limit, page, total, totalPage } };
 });
 const getAllMealsForPreferencesFromDb = (userId, query) => __awaiter(void 0, void 0, void 0, function* () {
