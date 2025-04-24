@@ -1,0 +1,19 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.mealPreferenceRoutes = void 0;
+const express_1 = require("express");
+const mealPreferences_controllers_1 = require("./mealPreferences.controllers");
+const auth_1 = __importDefault(require("../middlewares/auth"));
+const user_constants_1 = require("../user/user.constants");
+const validateRequest_1 = __importDefault(require("../middlewares/validateRequest"));
+const mealPreferences_validations_1 = require("./mealPreferences.validations");
+const router = (0, express_1.Router)();
+router.get("/", (0, auth_1.default)(user_constants_1.userRole.user, user_constants_1.userRole.admin), mealPreferences_controllers_1.mealPreferenceControllers.getAllMealPreferences);
+router.get("/:id", (0, auth_1.default)(user_constants_1.userRole.user, user_constants_1.userRole.admin), mealPreferences_controllers_1.mealPreferenceControllers.getSingleMealPreference);
+router.post("/create-meal-preference", (0, auth_1.default)(user_constants_1.userRole.user), (0, validateRequest_1.default)(mealPreferences_validations_1.mealPreferenceValidations.createMealPreferenceValidationSchema), mealPreferences_controllers_1.mealPreferenceControllers.createMealPreference);
+router.patch("/update-meal-preference/:id", (0, auth_1.default)(user_constants_1.userRole.user), (0, validateRequest_1.default)(mealPreferences_validations_1.mealPreferenceValidations.updateMealPreferenceValidationSchema), mealPreferences_controllers_1.mealPreferenceControllers.updateMealPreference);
+router.delete("/:id", (0, auth_1.default)(user_constants_1.userRole.user), mealPreferences_controllers_1.mealPreferenceControllers.deleteMealPreference);
+exports.mealPreferenceRoutes = router;
