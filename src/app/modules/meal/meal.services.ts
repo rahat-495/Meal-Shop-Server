@@ -68,7 +68,7 @@ const getAllMealsFromDb = async (query : any) => {
 
     const total = await mealsModel.find(filter).estimatedDocumentCount() ;
     const result = await mealsModel.find(filter).skip(skip).limit(limit) ;
-    const totalPage = Math.ceil(result.length / limit) ;
+    const totalPage = Math.ceil(total / limit) ;
     
     return { result , meta : { limit , page , total , totalPage }};
 }

@@ -24,7 +24,8 @@ const dietaryPreferenceSchema = new Schema<TDietaryPreference>({
         required : true ,
     } ,
     userId : {
-        type : String ,
+        ref : "user" ,
+        type : Schema.Types.ObjectId ,
         required : true ,
     } ,
 })

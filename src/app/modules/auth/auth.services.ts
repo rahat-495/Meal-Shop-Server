@@ -37,7 +37,7 @@ const loginUser = async (payload : TUserLogin) => {
 
     const isPasswordMatched = await bcrypt.compare(payload.password , isUserExist.password) ;
     if(!isPasswordMatched){
-        throw new AppError(http.UNAUTHORIZED , "User not found !") ;
+        throw new AppError(http.UNAUTHORIZED , "Password did not match !") ;
     }
 
     const jwtPayload = { email : isUserExist?.email , role : isUserExist?.role , userId : isUserExist?._id , phoneNumber : isUserExist?.phoneNumber } ;
