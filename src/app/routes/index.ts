@@ -5,6 +5,7 @@ import { userRoutes } from "../modules/user/user.routes";
 import { preferenceRoutes } from "../modules/preferences/preferences.routes";
 import { mealRoutes } from "../modules/meal/meal.routes";
 import { orderRoutes } from "../modules/order/order.routes";
+import { mealPreferenceRoutes } from "../modules/mealPreferences/mealPreferences.routes";
 
 const router = Router() ;
 
@@ -28,6 +29,10 @@ const moduleRoutes = [
     {
         path : "/orders",
         route : orderRoutes ,
+    },
+    {
+        path : "/meal-preferences",
+        route : mealPreferenceRoutes ,
     },
 ]
 
