@@ -39,6 +39,10 @@ const mealPreferenceSchema = new Schema<TMealPreference>({
         ref: "user",
         required: true,
         type: Schema.Types.ObjectId,
+    },
+    reply : {
+        type: String,
+        default : "Wait for admin reply !" ,
     }
 },{
     timestamps: true,

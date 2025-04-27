@@ -16,6 +16,7 @@ exports.mealPreferenceServices = void 0;
 const AppErrors_1 = __importDefault(require("../../errors/AppErrors"));
 const mealPreferences_model_1 = require("./mealPreferences.model");
 const createMealPreferenceIntoDb = (userId, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(payload);
     const result = yield mealPreferences_model_1.mealPreferencesModel.create(Object.assign(Object.assign({}, payload), { createdBy: userId }));
     return result;
 });
@@ -50,6 +51,10 @@ const getSingleMealPreferenceFromDb = (id) => __awaiter(void 0, void 0, void 0, 
     }
     return result;
 });
+const getMyMealPreferencesFromDb = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield mealPreferences_model_1.mealPreferencesModel.find({ createdBy: id });
+    return result;
+});
 const deleteMealPreferenceFromDb = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const isMealPreferenceExist = yield mealPreferences_model_1.mealPreferencesModel.findById(id);
     if (!isMealPreferenceExist) {
@@ -58,10 +63,20 @@ const deleteMealPreferenceFromDb = (id) => __awaiter(void 0, void 0, void 0, fun
     yield mealPreferences_model_1.mealPreferencesModel.findByIdAndDelete(id);
     return {};
 });
+const sendReplyToUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const isMealPreferenceExist = yield mealPreferences_model_1.mealPreferencesModel.findById(payload === null || payload === void 0 ? void 0 : payload.id);
+    if (!isMealPreferenceExist) {
+        throw new AppErrors_1.default(404, "Meal preference not found !");
+    }
+    const result = yield mealPreferences_model_1.mealPreferencesModel.findByIdAndUpdate(payload === null || payload === void 0 ? void 0 : payload.id, { reply: payload === null || payload === void 0 ? void 0 : payload.reply }, { new: true });
+    return result;
+});
 exports.mealPreferenceServices = {
+    sendReplyToUser,
     createMealPreferenceIntoDb,
     updateMealPreferenceIntoDb,
     deleteMealPreferenceFromDb,
+    getMyMealPreferencesFromDb,
     getAllMealPreferencesFromDb,
     getSingleMealPreferenceFromDb,
 };

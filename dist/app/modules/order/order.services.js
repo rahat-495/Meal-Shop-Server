@@ -32,12 +32,11 @@ const createMealOrderService = (data, userId, client_ip) => __awaiter(void 0, vo
         if (!data.customer) {
             data.customer = new mongoose_1.default.Types.ObjectId(user._id);
         }
-        const meal = yield meal_model_1.mealsModel.findById(id).session(session);
+        const meal = yield meal_model_1.mealsModel.findById(id);
         if (!meal) {
             throw new AppErrors_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, 'Meal not found.');
         }
         data.totalPrice = meal.price * quantity;
-        yield meal.save({ session });
         const orderData = Object.assign(Object.assign({}, data), { customer: user._id });
         const result = yield order_model_1.default.create([orderData], { session });
         yield result[0].populate('customer', 'name email role');
@@ -68,6 +67,7 @@ const createMealOrderService = (data, userId, client_ip) => __awaiter(void 0, vo
         return { order: result[0], checkout_url: payment.checkout_url };
     }
     catch (error) {
+        console.log(error);
         yield session.abortTransaction();
         session.endSession();
         throw new AppErrors_1.default(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, 'Order creation failed');

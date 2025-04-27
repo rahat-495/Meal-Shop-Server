@@ -10,7 +10,23 @@ const app = express() ;
 
 app.use(express.json()) ;
 app.use(cookieParser()) ;
-app.use(cors({origin : ['http://localhost:5173'] , credentials : true})) ;
+// app.use(cors({origin : ['http://localhost:3000' , 'https://meal-shop-client.vercel.app/'] , credentials : true})) ;
+const allowedOrigins = [
+    "http://localhost:3000",
+    "https://meal-shop-client.vercel.app"
+  ];
+  
+  app.use(cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+}));
+// app.options("*", cors());
 
 app.use('/api/v1' , router) ;
 

@@ -16,6 +16,12 @@ router.get(
 ) ;
 
 router.get(
+    "/get-my-meal-preferences" , 
+    auth(userRole.user) , 
+    mealPreferenceControllers.getMyMealPreferences
+) ;
+
+router.get(
     "/:id" , 
     auth(userRole.user , 
     userRole.admin) , 
@@ -34,6 +40,12 @@ router.patch(
     auth(userRole.user) ,
     validateRequest(mealPreferenceValidations.updateMealPreferenceValidationSchema) , 
     mealPreferenceControllers.updateMealPreference
+) ;
+
+router.patch(
+    "/send-reply" , 
+    auth(userRole.admin) ,
+    mealPreferenceControllers.sendReply
 ) ;
 
 router.delete(
