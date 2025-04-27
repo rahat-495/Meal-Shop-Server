@@ -28,13 +28,12 @@ const createMealOrderService = async (
       data.customer = new mongoose.Types.ObjectId(user._id);
     }
     
-    const meal = await mealsModel.findById(id).session(session);
+    const meal = await mealsModel.findById(id)
     if (!meal) {
       throw new AppError(StatusCodes.BAD_REQUEST, 'Meal not found.');
     }
     
     data.totalPrice = meal.price * quantity;
-    await meal.save({ session });
     
     const orderData = {...data, customer: user._id };
     const result = await orderMealModel.create([orderData], { session });
@@ -70,7 +69,7 @@ const createMealOrderService = async (
     return { order: result[0], checkout_url: payment.checkout_url };
 
   } catch (error) {
-    
+    console.log(error);
     await session.abortTransaction();
     session.endSession();
     throw new AppError(

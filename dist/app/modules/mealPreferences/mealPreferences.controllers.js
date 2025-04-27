@@ -22,6 +22,12 @@ const getAllMealPreferences = (0, catchAsync_1.default)((req, res) => __awaiter(
         (0, sendResponse_1.default)(res, { data: result, statusCode: 200, success: true, message: "Meal preferences are retrived success full !" });
     }
 }));
+const getMyMealPreferences = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield mealPreferences_services_1.mealPreferenceServices.getMyMealPreferencesFromDb(req.user.userId);
+    if (result) {
+        (0, sendResponse_1.default)(res, { data: result, statusCode: 200, success: true, message: "Meal preferences are retrived success full !" });
+    }
+}));
 const getSingleMealPreference = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield mealPreferences_services_1.mealPreferenceServices.getSingleMealPreferenceFromDb(req.params.id);
     if (result) {
@@ -46,8 +52,16 @@ const deleteMealPreference = (0, catchAsync_1.default)((req, res) => __awaiter(v
         (0, sendResponse_1.default)(res, { data: result, statusCode: 200, success: true, message: "Meal preference deleted success full !" });
     }
 }));
+const sendReply = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield mealPreferences_services_1.mealPreferenceServices.sendReplyToUser(req.body);
+    if (result) {
+        (0, sendResponse_1.default)(res, { data: result, statusCode: 200, success: true, message: "Reply sended success full !" });
+    }
+}));
 exports.mealPreferenceControllers = {
+    sendReply,
     createMealPreference,
+    getMyMealPreferences,
     updateMealPreference,
     deleteMealPreference,
     getAllMealPreferences,

@@ -19,14 +19,14 @@ const auth_services_1 = require("./auth.services");
 const config_1 = __importDefault(require("../../config"));
 const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_services_1.authServices.loginUser(req.body);
-    res.cookie("refreshToken", result.refreshToken, { secure: config_1.default.nodeEnv === "production", httpOnly: true, sameSite: "strict", maxAge: 1000 * 60 * 60 * 24 * 365 });
+    res.cookie("refreshToken", result.refreshToken, { secure: config_1.default.nodeEnv === "production", httpOnly: true, sameSite: "none", maxAge: 1000 * 60 * 60 * 24 * 365 });
     if (result) {
         (0, sendResponse_1.default)(res, { data: { accessToken: result === null || result === void 0 ? void 0 : result.accessToken }, statusCode: 200, success: true, message: "User login success full !" });
     }
 }));
 const registerUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_services_1.authServices.createUserIntoDb(req.body);
-    res.cookie("refreshToken", result.refreshToken, { secure: config_1.default.nodeEnv === "production", httpOnly: true, sameSite: "strict", maxAge: 1000 * 60 * 60 * 24 * 365 });
+    res.cookie("refreshToken", result.refreshToken, { secure: config_1.default.nodeEnv === "production", httpOnly: true, sameSite: "none", maxAge: 1000 * 60 * 60 * 24 * 365 });
     if (result) {
         (0, sendResponse_1.default)(res, { data: { accessToken: result === null || result === void 0 ? void 0 : result.accessToken }, statusCode: 200, success: true, message: "User register success full !" });
     }

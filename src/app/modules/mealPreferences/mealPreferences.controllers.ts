@@ -11,6 +11,13 @@ const getAllMealPreferences : RequestHandler = catchAsync(async (req , res) => {
     }
 })
 
+const getMyMealPreferences : RequestHandler = catchAsync(async (req , res) => {
+    const result = await mealPreferenceServices.getMyMealPreferencesFromDb(req.user.userId) ;
+    if(result){
+        sendResponse<object>(res , {data : result , statusCode : 200 , success : true , message : "Meal preferences are retrived success full !"}) ;
+    }
+})
+
 const getSingleMealPreference : RequestHandler = catchAsync(async (req , res) => {
     const result = await mealPreferenceServices.getSingleMealPreferenceFromDb(req.params.id) ;
     if(result){
@@ -39,8 +46,17 @@ const deleteMealPreference : RequestHandler = catchAsync(async (req , res) => {
     }
 })
 
+const sendReply : RequestHandler = catchAsync(async (req , res) => {
+    const result = await mealPreferenceServices.sendReplyToUser(req.body) ;
+    if(result){
+        sendResponse<object>(res , {data : result , statusCode : 200 , success : true , message : "Reply sended success full !"}) ;
+    }
+})
+
 export const mealPreferenceControllers = {
+    sendReply ,
     createMealPreference ,
+    getMyMealPreferences ,
     updateMealPreference ,
     deleteMealPreference ,
     getAllMealPreferences ,
