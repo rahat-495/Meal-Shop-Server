@@ -39,6 +39,10 @@ const mealPreferenceSchema = new mongoose_1.Schema({
         ref: "user",
         required: true,
         type: mongoose_1.Schema.Types.ObjectId,
+    },
+    reply: {
+        type: String,
+        default: "Wait for admin reply !",
     }
 }, {
     timestamps: true,

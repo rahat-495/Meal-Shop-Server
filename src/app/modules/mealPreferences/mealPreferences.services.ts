@@ -4,6 +4,7 @@ import { TMealPreference } from "./mealPreferences.interfaces";
 import { mealPreferencesModel } from "./mealPreferences.model";
 
 const createMealPreferenceIntoDb = async (userId : string, payload : TMealPreference) => {
+    console.log(payload);
     const result = await mealPreferencesModel.create({...payload , createdBy : userId}) ;
     return result ;
 }
@@ -48,20 +49,37 @@ const getSingleMealPreferenceFromDb = async (id : string) => {
     return result ;
 }
 
+const getMyMealPreferencesFromDb = async (id : string) => {
+    const result = await mealPreferencesModel.find({createdBy : id}) ;
+    return result ;
+}
+
 const deleteMealPreferenceFromDb = async (id : string) => {
     const isMealPreferenceExist = await mealPreferencesModel.findById(id) ;
     if(!isMealPreferenceExist){
         throw new AppError(404 , "Meal preference not found !") ;
     }
-
+    
     await mealPreferencesModel.findByIdAndDelete(id) ;
     return {} ;
 }
 
+const sendReplyToUser = async (payload : {id : string , reply : string}) => {
+    const isMealPreferenceExist = await mealPreferencesModel.findById(payload?.id) ;
+    if(!isMealPreferenceExist){
+        throw new AppError(404 , "Meal preference not found !") ;
+    }
+
+    const result = await mealPreferencesModel.findByIdAndUpdate(payload?.id , {reply : payload?.reply} , {new : true}) ;
+    return result ;
+}
+
 export const mealPreferenceServices = {
+    sendReplyToUser ,
     createMealPreferenceIntoDb ,
     updateMealPreferenceIntoDb ,
     deleteMealPreferenceFromDb ,
+    getMyMealPreferencesFromDb ,
     getAllMealPreferencesFromDb ,
     getSingleMealPreferenceFromDb ,
 }

@@ -8,4 +8,5 @@ export type TMealPreference = {
     dietary: TDietary;
     ingredients: string[];
     createdBy: Types.ObjectId; 
+    reply ?: string ;
 };
